@@ -4,13 +4,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import SessionApp from "./Store/SessionContext";
+import { BrowserRouter } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     {/* <AuthProvider> */}
     <SessionApp>
-      <App />
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
     </SessionApp>
     {/* </AuthProvider> */}
   </React.StrictMode>

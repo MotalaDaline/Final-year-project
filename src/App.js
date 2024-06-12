@@ -3,7 +3,8 @@ import "./App.css";
 import { Field, Form, Formik } from "formik";
 import { supabase } from "./Configs/supabase";
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import Header from "./Pages/Navbar";
 
 function App() {
   // State to store the user email
@@ -12,7 +13,10 @@ function App() {
   // Asynchronous function to fetch user data
   const fetchUser = async () => {
     try {
-      const { data: { user }, error } = await supabase.auth.getUser();
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.getUser();
       if (error) {
         throw error;
       }
@@ -44,7 +48,7 @@ function App() {
       }
       alert("Sign-up success! Please check your email to confirm.");
       console.log("Sign-up data: ", data);
-      fetchUser();  // Fetch user again after sign-up
+      fetchUser(); // Fetch user again after sign-up
     } catch (error) {
       alert(`Error creating user: ${error.message}`);
       console.error("Sign-up error: ", error.message);
@@ -63,7 +67,7 @@ function App() {
       }
       alert("Login success!");
       console.log("Sign-in data: ", data);
-      fetchUser();  // Fetch user again after sign-in
+      fetchUser(); // Fetch user again after sign-in
     } catch (error) {
       alert(`Error signing in: ${error.message}`);
       console.error("Sign-in error: ", error.message);
@@ -149,6 +153,8 @@ function App() {
 
       {/* Display user email if user is available */}
       <p>{userEmail ? `User email: ${userEmail}` : "No user logged in"}</p>
+
+      <Header />
     </div>
   );
 }
