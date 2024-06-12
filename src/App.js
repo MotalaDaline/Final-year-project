@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./App.css";
 import { Field, Form, Formik } from "formik";
 import { supabase } from "./Configs/supabase";
-// import { supabase } from "../Configs/supabase";
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   // State to store the user email
