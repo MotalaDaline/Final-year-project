@@ -5,6 +5,7 @@ import { supabase } from "./Configs/supabase";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./Pages/Navbar";
+import AboutPage from "./Pages/About";
 
 function App() {
   // State to store the user email
@@ -155,6 +156,7 @@ function App() {
       <p>{userEmail ? `User email: ${userEmail}` : "No user logged in"}</p>
 
       <Header />
+      <AboutPage />
     </div>
   );
 }

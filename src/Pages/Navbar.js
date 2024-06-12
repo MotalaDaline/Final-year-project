@@ -64,6 +64,9 @@ export default function Header() {
             </Nav>
             <Nav>
               <Nav.Link href="#deets">More deets</Nav.Link>
+              <i className="bi bi-bell-fill"></i>
+                <i className="bi bi-person"></i>
+                
               <Nav.Link eventKey={2} href="#memes">
                 Dank memes
               </Nav.Link>
