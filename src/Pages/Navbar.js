@@ -1,10 +1,14 @@
 import React from "react";
 import { supabaseAuth } from "../Configs/supabase";
+import { NavLink } from "react-router-dom";
 
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import { Button } from "react-bootstrap";
+import { NotificationsSharp, PersonCircleSharp } from "react-ionicons";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const [userEmail, setUserEmail] = React.useState(null);
@@ -44,10 +48,10 @@ export default function Header() {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link href="#features">
-                {userRole === "authenticated" ? "About" : "Featured"}
-              </Nav.Link>
-              <Nav.Link href="#pricing">Pricing</Nav.Link>
+              <NavLink to="/admin">
+                Home
+              </NavLink>
+              <NavLink href="#pricing">Pricing</NavLink>
               <NavDropdown title="Dropdown" id="collapsible-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
@@ -63,13 +67,16 @@ export default function Header() {
               </NavDropdown>
             </Nav>
             <Nav>
-              <Nav.Link href="#deets">More deets</Nav.Link>
-              <i className="bi bi-bell-fill"></i>
-                <i className="bi bi-person"></i>
-                
+              <Link to="/authentication" className="success">
+                Login
+              </Link>
               <Nav.Link eventKey={2} href="#memes">
                 Dank memes
               </Nav.Link>
+              {/* <Button type="button"> */}
+              <PersonCircleSharp height="30px" width="30px" className="mr-8" />
+              <NotificationsSharp height="30px" width="30px" />
+              {/* </Button> */}
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -1,31 +1,65 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
+
 import { Field, Form, Formik } from "formik";
-import { supabase } from "./Configs/supabase";
+import { supabase, supabaseAdminAuth } from "./Configs/supabase";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "./Pages/Navbar";
-import AboutPage from "./Pages/About";
+import { useRoutes } from "react-router-dom";
+import { routes } from "./Routes";
 
 function App() {
-  // State to store the user email
+  // State to store the user data
   const [userEmail, setUserEmail] = useState(null);
+  const [userRole, setUserRole] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [phone, setPhone] = useState(null);
 
   // Asynchronous function to fetch user data
   const fetchUser = async () => {
     try {
+      // Get the current authenticated user's email
       const {
         data: { user },
         error,
       } = await supabase.auth.getUser();
+
       if (error) {
         throw error;
       }
-      console.log("Fetched user: ", user);
+
       if (user) {
-        setUserEmail(user.email);
+        const userEmail = user.email;
+        const phone = user.phone;
+        const { role } = user.user_metadata;
+        console.log("Fetched user: ", user);
+
+        // Set user email state
+        setUserEmail(userEmail);
+        setPhone(phone);
+        setUserRole(role);
+
+        // Fetch user profile data from 'profiles' table by email
+        const { data: profileData, error: profileError } = await supabase
+          .from("profiles")
+          .select("username, role")
+          .eq("email", userEmail)
+          .single();
+
+        if (profileError) {
+          throw profileError;
+        }
+
+        // Set user role and other data
+        setUserRole(profileData.role);
+        setUserData(profileData);
+
+        console.log("Fetched user profile: ", profileData);
       } else {
+        // If no user is found, reset states
         setUserEmail(null);
+        setUserRole(null);
+        setUserData(null);
       }
     } catch (error) {
       console.error("Error fetching user: ", error.message);
@@ -80,12 +114,16 @@ function App() {
     password: "",
   };
 
+  const AppRoutes = useRoutes(routes);
+
   return (
-    <div className="App">
-      <h1>Sign-up / Login</h1>
+    <div>
+      <Header />
+      {AppRoutes}
+      {/* <h1>Sign-up / Login</h1> */}
 
       {/* Sign-up form */}
-      <h2>Sign Up</h2>
+      {/* <h2>Sign Up</h2>
       <Formik initialValues={initialValues} onSubmit={handleCreateUser}>
         {({ values, handleChange, handleBlur, isSubmitting }) => (
           <Form>
@@ -116,10 +154,10 @@ function App() {
             </button>
           </Form>
         )}
-      </Formik>
+      </Formik> */}
 
       {/* Sign-in form */}
-      <h2>Login</h2>
+      {/* <h2>Login</h2>
       <Formik initialValues={initialValues} onSubmit={handleLoginUser}>
         {({ values, handleChange, handleBlur, isSubmitting }) => (
           <Form>
@@ -150,13 +188,16 @@ function App() {
             </button>
           </Form>
         )}
-      </Formik>
+      </Formik> */}
 
       {/* Display user email if user is available */}
       <p>{userEmail ? `User email: ${userEmail}` : "No user logged in"}</p>
+      <p>{userRole ? `User role is: ${userRole}` : "No user role"}</p>
+      <p>{phone ? `User phone is: ${phone}` : "No user phone"}</p>
 
-      <Header />
-      <AboutPage />
+      {/* <HomePage />
+      <AuthPage />
+      <AboutPage /> */}
     </div>
   );
 }
